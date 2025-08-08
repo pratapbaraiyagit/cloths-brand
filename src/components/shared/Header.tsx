@@ -45,6 +45,7 @@ function AuthNav() {
 
 function ClientAuth() {
     const [isClient, setIsClient] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         setIsClient(true);
@@ -82,16 +83,16 @@ function ClientAuth() {
                         href={link.href}
                         className={cn(
                         "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
-                        usePathname() === link.href && "text-foreground"
+                        pathname === link.href && "text-foreground"
                         )}
                     >
                         {link.label}
                     </Link>
                     ))}
                 </nav>
-                    <div className="md:hidden">
-                    <AuthNav />
-                </div>
+                    <div className="mt-4">
+                        <AuthNav />
+                    </div>
                 </div>
             </SheetContent>
             </Sheet>

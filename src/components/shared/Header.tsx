@@ -27,7 +27,7 @@ function AuthNav() {
           <Button asChild>
               <Link href="/dashboard">
                   <LayoutDashboard />
-                  <span className="hidden md:inline">Dashboard</span>
+                  <span className="md:inline">Dashboard</span>
               </Link>
           </Button>
       );
@@ -37,7 +37,7 @@ function AuthNav() {
     <Button asChild>
       <Link href="/login">
         <User />
-        <span className="hidden md:inline">Login</span>
+        <span className="md:inline">Login</span>
       </Link>
     </Button>
   );

@@ -31,10 +31,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Edit, PlusCircle, Trash2, Loader2 } from "lucide-react";
+import { Edit, PlusCircle, Trash2, Loader2, Upload, Link2 } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import Image from "next/image";
 
 function ProductForm({ product, categories, onSave, onOpenChange }: { product: Partial<Product> | null, categories: Category[], onSave: () => void, onOpenChange: (open: boolean) => void }) {
     const [name, setName] = useState(product?.name || "");
@@ -44,6 +46,17 @@ function ProductForm({ product, categories, onSave, onOpenChange }: { product: P
     const [image, setImage] = useState(product?.image || "");
     const [isSaving, setIsSaving] = useState(false);
     const { toast } = useToast();
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,7 +69,7 @@ function ProductForm({ product, categories, onSave, onOpenChange }: { product: P
             return;
         }
 
-        const productData = { name, price, categoryId, categoryName: category.name, description, image };
+        const productData = { name, price, categoryId, categoryName: category.name, description, image: image || 'https://placehold.co/600x800.png' };
         const method = product?.id ? 'PUT' : 'POST';
         const url = product?.id ? `/api/products/${product.id}` : '/api/products';
 
@@ -95,7 +108,7 @@ function ProductForm({ product, categories, onSave, onOpenChange }: { product: P
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="category" className="text-right">Category</Label>
-                    <Select value={categoryId} onValueChange={setCategoryId}>
+                    <Select value={categoryId} onValueChange={setCategoryId} required>
                         <SelectTrigger className="col-span-3">
                             <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
@@ -112,9 +125,27 @@ function ProductForm({ product, categories, onSave, onOpenChange }: { product: P
                     <Label htmlFor="description" className="text-right">Description</Label>
                     <Textarea id="description" value={description} onChange={e => setDescription(e.target.value)} className="col-span-3" required />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="image" className="text-right">Image URL</Label>
-                    <Input id="image" value={image} onChange={e => setImage(e.target.value)} className="col-span-3" required />
+                <div className="grid grid-cols-4 items-start gap-4">
+                    <Label className="text-right pt-2">Image</Label>
+                    <div className="col-span-3">
+                        <Tabs defaultValue="url">
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="url"><Link2 className="mr-2 h-4 w-4" /> URL</TabsTrigger>
+                                <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4" /> Upload</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="url" className="mt-2">
+                                <Input id="image-url" placeholder="https://example.com/image.png" value={image} onChange={e => setImage(e.target.value)} />
+                            </TabsContent>
+                            <TabsContent value="upload" className="mt-2">
+                                <Input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} />
+                            </TabsContent>
+                        </Tabs>
+                        {image && (
+                            <div className="mt-4 relative w-full h-48 rounded-md overflow-hidden border">
+                                <Image src={image} alt="Image preview" layout="fill" objectFit="contain" />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
             <DialogFooter>

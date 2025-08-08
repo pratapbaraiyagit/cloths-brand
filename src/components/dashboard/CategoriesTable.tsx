@@ -24,20 +24,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Edit, PlusCircle, Trash2, Loader2 } from "lucide-react";
+import { Edit, PlusCircle, Trash2, Loader2, Upload, Link2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Image from "next/image";
 
 function CategoryForm({ category, onSave, onOpenChange }: { category: Partial<Category> | null, onSave: () => void, onOpenChange: (open: boolean) => void }) {
     const [name, setName] = useState(category?.name || "");
     const [description, setDescription] = useState(category?.description || "");
+    const [image, setImage] = useState(category?.image || "");
     const [isSaving, setIsSaving] = useState(false);
     const { toast } = useToast();
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
-        const categoryData = { name, description, image: category?.image || 'https://placehold.co/800x600.png' };
+        const categoryData = { name, description, image: image || 'https://placehold.co/800x600.png' };
         const method = category?.id ? 'PUT' : 'POST';
         const url = category?.id ? `/api/categories/${category.id}` : '/api/categories';
 
@@ -73,6 +87,28 @@ function CategoryForm({ category, onSave, onOpenChange }: { category: Partial<Ca
                 <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="description" className="text-right">Description</Label>
                     <Textarea id="description" value={description} onChange={e => setDescription(e.target.value)} className="col-span-3" required />
+                </div>
+                <div className="grid grid-cols-4 items-start gap-4">
+                     <Label className="text-right pt-2">Image</Label>
+                     <div className="col-span-3">
+                        <Tabs defaultValue="url">
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="url"><Link2 className="mr-2 h-4 w-4" /> URL</TabsTrigger>
+                                <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4" /> Upload</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="url" className="mt-2">
+                                <Input id="image-url" placeholder="https://example.com/image.png" value={image} onChange={e => setImage(e.target.value)} />
+                            </TabsContent>
+                             <TabsContent value="upload" className="mt-2">
+                                <Input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} />
+                            </TabsContent>
+                        </Tabs>
+                        {image && (
+                            <div className="mt-4 relative w-full h-48 rounded-md overflow-hidden border">
+                                <Image src={image} alt="Image preview" layout="fill" objectFit="contain" />
+                            </div>
+                        )}
+                     </div>
                 </div>
             </div>
             <DialogFooter>

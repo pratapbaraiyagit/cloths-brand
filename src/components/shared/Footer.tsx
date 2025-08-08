@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "./Logo";
 
 export function Footer() {
   return (
@@ -7,8 +8,11 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8 md:px-6">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="text-center md:text-left">
-            <Link href="/" className="font-headline text-2xl font-bold text-foreground">
-              LuneFemme
+            <Link href="/" className="flex items-center justify-center md:justify-start gap-2">
+              <Logo />
+              <span className="font-headline text-2xl font-bold text-foreground">
+                LuneFemme
+              </span>
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
               Experience elegance, redefined.

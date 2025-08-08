@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Logo } from "./Logo";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -22,9 +23,8 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <span className="font-headline text-2xl font-bold text-foreground">
-            LuneFemme
-          </span>
+          <Logo />
+          <span className="sr-only">LuneFemme</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
@@ -63,6 +63,7 @@ export function Header() {
             <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
             <div className="flex flex-col gap-6 p-6">
               <Link href="/" className="flex items-center gap-2">
+                 <Logo />
                  <span className="font-headline text-2xl font-bold text-foreground">
                     LuneFemme
                  </span>

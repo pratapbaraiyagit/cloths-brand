@@ -26,17 +26,17 @@ function AuthNav() {
     <>
       <div className="hidden items-center gap-2 md:flex">
         {isLoggedIn ? (
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" asChild>
             <Link href="/dashboard">
-              <LayoutDashboard className="h-6 w-6" />
-              <span className="sr-only">Dashboard</span>
+              <LayoutDashboard className="h-5 w-5" />
+              <span>Dashboard</span>
             </Link>
           </Button>
         ) : (
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" asChild>
             <Link href="/login">
-              <User className="h-6 w-6" />
-              <span className="sr-only">Login</span>
+              <User className="h-5 w-5" />
+              <span>Login</span>
             </Link>
           </Button>
         )}
@@ -77,7 +77,6 @@ export function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <Logo />
-          <span className="sr-only">LuneFemme</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
@@ -144,4 +143,3 @@ export function Header() {
     </header>
   );
 }
-

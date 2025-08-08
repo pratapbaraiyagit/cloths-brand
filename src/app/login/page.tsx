@@ -24,6 +24,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
+    // Simple validation for demonstration purposes
     if (email === "admin@gmail.com" && password === "admin") {
       toast({
         title: "Login Successful",

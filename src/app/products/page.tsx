@@ -1,3 +1,6 @@
+
+"use client"
+
 import { ProductCard } from "@/components/products/ProductCard";
 import { products, categories } from "@/lib/mock-data";
 import {
@@ -8,8 +11,28 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category");
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory || "all");
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      setFilteredProducts(products);
+    } else {
+      setFilteredProducts(products.filter(p => p.categoryId === selectedCategory));
+    }
+  }, [selectedCategory]);
+
+  const handleCategoryChange = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+  }
+
   return (
     <div className="bg-background">
       <div className="container mx-auto px-4 py-12 md:px-6 md:py-20">
@@ -26,7 +49,7 @@ export default function ProductsPage() {
 
         <div className="flex justify-end mb-8">
             <div className="w-full md:w-64">
-                <Select>
+                <Select value={selectedCategory} onValueChange={handleCategoryChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Filter by category" />
                     </SelectTrigger>
@@ -43,7 +66,7 @@ export default function ProductsPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-          {products.map((product, i) => (
+          {filteredProducts.map((product, i) => (
             <div key={product.id} className="animate-slide-in-up" style={{ animationDelay: `${i * 50}ms` }}>
                 <ProductCard product={product} />
             </div>

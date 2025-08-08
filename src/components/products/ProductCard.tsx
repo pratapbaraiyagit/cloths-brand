@@ -21,8 +21,10 @@ export function ProductCard({ product }: { product: Product }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-              <Button size="icon" variant="secondary" aria-label="Quick View">
-                <Eye className="h-5 w-5" />
+              <Button size="icon" variant="secondary" aria-label="Quick View" asChild>
+                <Link href={`/products/${product.id}`}>
+                  <Eye className="h-5 w-5" />
+                </Link>
               </Button>
               <Button size="icon" aria-label="Add to Bag">
                 <ShoppingBag className="h-5 w-5" />

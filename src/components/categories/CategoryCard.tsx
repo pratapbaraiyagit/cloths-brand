@@ -20,7 +20,7 @@ const AbstractBg = ({ className }: { className?: string }) => (
 
 export function CategoryCard({ category }: { category: Category }) {
   return (
-    <Link href={`/categories?filter=${category.id}`}>
+    <Link href={`/products?category=${category.id}`}>
         <Card className="group relative w-full h-64 overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border-none">
             <AbstractBg />
             <CardContent className="relative z-10 flex h-full flex-col justify-end p-6 bg-gradient-to-t from-black/50 to-transparent">

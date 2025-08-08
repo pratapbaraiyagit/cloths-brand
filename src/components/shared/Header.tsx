@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Menu, ShoppingBag, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -60,6 +60,7 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right">
+            <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
             <div className="flex flex-col gap-6 p-6">
               <Link href="/" className="flex items-center gap-2">
                  <span className="font-headline text-2xl font-bold text-foreground">

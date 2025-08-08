@@ -25,38 +25,34 @@ function AuthNav() {
   return (
     <>
       <div className="hidden items-center gap-2 md:flex">
-        {isLoggedIn ? (
-          <Button variant="ghost" asChild>
+        <Button asChild variant="ghost">
+          {isLoggedIn ? (
             <Link href="/dashboard">
               <LayoutDashboard className="h-5 w-5" />
               <span>Dashboard</span>
             </Link>
-          </Button>
-        ) : (
-          <Button variant="ghost" asChild>
+          ) : (
             <Link href="/login">
               <User className="h-5 w-5" />
               <span>Login</span>
             </Link>
-          </Button>
-        )}
+          )}
+        </Button>
       </div>
       <div className="mt-4 flex flex-col gap-4 md:hidden">
-        {isLoggedIn ? (
-          <Button variant="outline" asChild>
-            <Link href="/dashboard">
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              Dashboard
-            </Link>
-          </Button>
-        ) : (
-          <Button variant="outline" asChild>
-            <Link href="/login">
-              <User className="mr-2 h-4 w-4" />
-              Login
-            </Link>
-          </Button>
-        )}
+         <Button asChild variant="outline">
+            {isLoggedIn ? (
+                 <Link href="/dashboard">
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Dashboard
+                </Link>
+            ) : (
+                <Link href="/login">
+                    <User className="mr-2 h-4 w-4" />
+                    Login
+                </Link>
+            )}
+        </Button>
       </div>
     </>
   );

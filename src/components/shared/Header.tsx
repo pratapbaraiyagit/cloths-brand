@@ -24,12 +24,12 @@ function AuthNav() {
 
   if (isLoggedIn) {
       return (
-          <Button asChild>
-            <Link href="/dashboard">
-              <LayoutDashboard />
-              <span className="md:inline">Dashboard</span>
-            </Link>
-          </Button>
+        <Button asChild>
+          <Link href="/dashboard">
+            <LayoutDashboard />
+            <span className="md:inline">Dashboard</span>
+          </Link>
+        </Button>
       );
   }
 
@@ -50,6 +50,7 @@ function ClientAuth() {
     useEffect(() => {
         setIsClient(true);
     }, []);
+
 
     if (!isClient) {
         return (

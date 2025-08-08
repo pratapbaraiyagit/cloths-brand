@@ -51,19 +51,19 @@ export function Header() {
         </nav>
         <div className="hidden items-center gap-2 md:flex">
            {isLoggedIn ? (
-             <Button variant="ghost" size="icon" asChild>
-              <Link href="/dashboard">
-                <LayoutDashboard className="h-6 w-6" />
-                <span className="sr-only">Dashboard</span>
-              </Link>
-            </Button>
+             <Link href="/dashboard" passHref>
+                <Button variant="ghost" size="icon">
+                    <LayoutDashboard className="h-6 w-6" />
+                    <span className="sr-only">Dashboard</span>
+                </Button>
+            </Link>
            ) : (
-            <Button variant="ghost" size="icon" asChild>
-                <Link href="/login">
-                <User className="h-6 w-6" />
-                <span className="sr-only">Login</span>
-                </Link>
-            </Button>
+            <Link href="/login" passHref>
+                <Button variant="ghost" size="icon">
+                    <User className="h-6 w-6" />
+                    <span className="sr-only">Login</span>
+                </Button>
+            </Link>
            )}
         </div>
         <Sheet>

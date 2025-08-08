@@ -21,35 +21,10 @@ const navLinks = [
 function AuthNav() {
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     setIsLoggedIn(pathname.startsWith('/dashboard'));
   }, [pathname]);
-
-  if (!isClient) {
-    return (
-      <>
-        <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/login">
-              <User className="h-6 w-6" />
-              <span className="sr-only">Login</span>
-            </Link>
-          </Button>
-        </div>
-        <div className="mt-4 flex flex-col gap-4 md:hidden">
-            <Button variant="outline" asChild>
-                <Link href="/login">
-                    <User className="mr-2 h-4 w-4" />
-                    Login
-                </Link>
-            </Button>
-        </div>
-      </>
-    )
-  }
 
   return (
     <>
@@ -94,6 +69,12 @@ function AuthNav() {
 
 export function Header() {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
@@ -119,7 +100,7 @@ export function Header() {
         
         <div className="flex items-center gap-2">
             <div className="hidden md:flex">
-                <AuthNav />
+                {isClient && <AuthNav />}
             </div>
             <Sheet>
             <SheetTrigger asChild>
@@ -151,7 +132,7 @@ export function Header() {
                     </Link>
                     ))}
                 </nav>
-                <AuthNav />
+                {isClient && <AuthNav />}
                 </div>
             </SheetContent>
             </Sheet>

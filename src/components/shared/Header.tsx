@@ -18,15 +18,82 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function Header() {
+function AuthNav() {
   const pathname = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-  // A real app would use a proper auth state management (like Context or a library)
-  // For this demo, we'll just check if the path is the dashboard
   useEffect(() => {
+    setIsClient(true);
     setIsLoggedIn(pathname.startsWith('/dashboard'));
   }, [pathname]);
+
+  if (!isClient) {
+    return (
+      <>
+        <div className="hidden items-center gap-2 md:flex">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/login">
+              <User className="h-6 w-6" />
+              <span className="sr-only">Login</span>
+            </Link>
+          </Button>
+        </div>
+        <div className="mt-4 flex flex-col gap-4 md:hidden">
+            <Button variant="outline" asChild>
+                <Link href="/login">
+                    <User className="mr-2 h-4 w-4" />
+                    Login
+                </Link>
+            </Button>
+        </div>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <div className="hidden items-center gap-2 md:flex">
+        {isLoggedIn ? (
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/dashboard">
+              <LayoutDashboard className="h-6 w-6" />
+              <span className="sr-only">Dashboard</span>
+            </Link>
+          </Button>
+        ) : (
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/login">
+              <User className="h-6 w-6" />
+              <span className="sr-only">Login</span>
+            </Link>
+          </Button>
+        )}
+      </div>
+      <div className="mt-4 flex flex-col gap-4 md:hidden">
+        {isLoggedIn ? (
+          <Button variant="outline" asChild>
+            <Link href="/dashboard">
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              Dashboard
+            </Link>
+          </Button>
+        ) : (
+          <Button variant="outline" asChild>
+            <Link href="/login">
+              <User className="mr-2 h-4 w-4" />
+              Login
+            </Link>
+          </Button>
+        )}
+      </div>
+    </>
+  );
+}
+
+
+export function Header() {
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
@@ -49,73 +116,46 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-2 md:flex">
-           {isLoggedIn ? (
-             <Link href="/dashboard" passHref>
-                <Button variant="ghost" size="icon">
-                    <LayoutDashboard className="h-6 w-6" />
-                    <span className="sr-only">Dashboard</span>
-                </Button>
-            </Link>
-           ) : (
-            <Link href="/login" passHref>
-                <Button variant="ghost" size="icon">
-                    <User className="h-6 w-6" />
-                    <span className="sr-only">Login</span>
-                </Button>
-            </Link>
-           )}
-        </div>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right">
-            <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-            <div className="flex flex-col gap-6 p-6">
-              <Link href="/" className="flex items-center gap-2">
-                 <Logo />
-                 <span className="font-headline text-2xl font-bold text-foreground">
-                    LuneFemme
-                 </span>
-              </Link>
-              <nav className="flex flex-col gap-4">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
-                      pathname === link.href && "text-foreground"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-              <div className="mt-4 flex flex-col gap-4">
-                 {isLoggedIn ? (
-                    <Button variant="outline" asChild>
-                        <Link href="/dashboard">
-                            <LayoutDashboard className="mr-2 h-4 w-4" />
-                            Dashboard
-                        </Link>
-                    </Button>
-                 ) : (
-                    <Button variant="outline" asChild>
-                        <Link href="/login">
-                            <User className="mr-2 h-4 w-4" />
-                            Login
-                        </Link>
-                    </Button>
-                 )}
-              </div>
+        
+        <div className="flex items-center gap-2">
+            <div className="hidden md:flex">
+                <AuthNav />
             </div>
-          </SheetContent>
-        </Sheet>
+            <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                <div className="flex flex-col gap-6 p-6">
+                <Link href="/" className="flex items-center gap-2">
+                    <Logo />
+                    <span className="font-headline text-2xl font-bold text-foreground">
+                        LuneFemme
+                    </span>
+                </Link>
+                <nav className="flex flex-col gap-4">
+                    {navLinks.map((link) => (
+                    <Link
+                        key={link.href}
+                        href={link.href}
+                        className={cn(
+                        "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
+                        pathname === link.href && "text-foreground"
+                        )}
+                    >
+                        {link.label}
+                    </Link>
+                    ))}
+                </nav>
+                <AuthNav />
+                </div>
+            </SheetContent>
+            </Sheet>
+        </div>
       </div>
     </header>
   );

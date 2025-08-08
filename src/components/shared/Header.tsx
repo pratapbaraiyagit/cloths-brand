@@ -2,10 +2,10 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, User, LayoutDashboard, LogOut } from "lucide-react";
+import { Menu, User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useEffect, useState } from "react";
@@ -18,18 +18,14 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-function AuthNav() {
-  const pathname = usePathname();
-  // This logic should be adapted based on your actual authentication state
-  const isLoggedIn = pathname.startsWith('/dashboard');
-
+function AuthNav({ isLoggedIn }: { isLoggedIn: boolean }) {
   if (isLoggedIn) {
     return (
        <div className="flex items-center gap-2">
             <Button asChild variant="outline">
                 <Link href="/dashboard">
-                <LayoutDashboard />
-                <span className="hidden md:inline">Dashboard</span>
+                <LayoutDashboard className="mr-2 h-5 w-5" />
+                <span>Dashboard</span>
                 </Link>
             </Button>
        </div>
@@ -39,16 +35,15 @@ function AuthNav() {
   return (
     <Button asChild>
       <Link href="/login">
-        <User />
-        <span className="md:inline">Login</span>
+        <User className="mr-2 h-5 w-5" />
+        <span>Login</span>
       </Link>
     </Button>
   );
 }
 
-function MobileNav() {
+function MobileNav({ isLoggedIn }: { isLoggedIn: boolean }) {
     const pathname = usePathname();
-    const isLoggedIn = pathname.startsWith('/dashboard');
 
     return (
          <Sheet>
@@ -85,14 +80,14 @@ function MobileNav() {
                        {isLoggedIn ? (
                            <Button asChild className="w-full">
                               <Link href="/dashboard">
-                                <LayoutDashboard />
+                                <LayoutDashboard className="mr-2 h-5 w-5" />
                                 Dashboard
                               </Link>
                            </Button>
                        ) : (
                            <Button asChild className="w-full">
                               <Link href="/login">
-                                <User />
+                                <User className="mr-2 h-5 w-5" />
                                 Login
                               </Link>
                             </Button>
@@ -105,14 +100,15 @@ function MobileNav() {
 }
 
 function ClientOnlyAuth() {
-    const [isClient, setIsClient] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsClient(true);
+        setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+        setIsLoading(false);
     }, []);
     
-    // Render a skeleton placeholder on the server and initial client render
-    if (!isClient) {
+    if (isLoading) {
         return (
             <>
                 <div className="hidden md:block">
@@ -125,14 +121,13 @@ function ClientOnlyAuth() {
         );
     }
     
-    // Render the actual content only on the client after hydration
     return (
         <>
             <div className="hidden md:block">
-                <AuthNav />
+                <AuthNav isLoggedIn={isLoggedIn} />
             </div>
             <div className="md:hidden">
-                <MobileNav />
+                <MobileNav isLoggedIn={isLoggedIn} />
             </div>
         </>
     );

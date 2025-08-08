@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useEffect } from "react";
 import { CategoriesTable } from "@/components/dashboard/CategoriesTable";
 import { ProductsTable } from "@/components/dashboard/ProductsTable";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { useRouter } from "next/navigation";
 function LogoutButton() {
   const router = useRouter();
   const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
     router.push('/login');
   };
 
@@ -25,6 +27,15 @@ function LogoutButton() {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn !== 'true') {
+      router.replace('/login');
+    }
+  }, [router]);
+
   return (
     <div className="bg-secondary/30 min-h-[calc(100vh-160px)]">
       <div className="container mx-auto px-4 py-12 md:px-6 md:py-16">

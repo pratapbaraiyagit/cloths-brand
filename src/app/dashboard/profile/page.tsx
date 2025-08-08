@@ -1,9 +1,22 @@
 
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ProfileForm } from "@/components/dashboard/ProfileForm";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { KeyRound } from "lucide-react";
 
 export default function ProfilePage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn !== 'true') {
+      router.replace('/login');
+    }
+  }, [router]);
+
   return (
     <div className="bg-background min-h-[calc(100vh-160px)] py-12 md:py-20">
       <div className="container mx-auto px-4 md:px-6 flex justify-center">

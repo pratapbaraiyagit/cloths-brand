@@ -27,6 +27,7 @@ export default function LoginPage() {
 
     // Simple validation for demonstration purposes
     if (email === "admin@gmail.com" && password === "admin") {
+      localStorage.setItem('isLoggedIn', 'true');
       toast({
         title: "Login Successful",
         description: "Welcome back, Admin!",

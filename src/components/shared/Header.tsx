@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -22,43 +21,24 @@ function AuthNav() {
   const pathname = usePathname();
   const isLoggedIn = pathname.startsWith('/dashboard');
 
-  return (
-    <>
-      <div className="hidden items-center gap-2 md:flex">
-        {isLoggedIn ? (
+  if (isLoggedIn) {
+      return (
           <Button asChild>
-            <Link href="/dashboard">
-              <LayoutDashboard className="mr-2 h-5 w-5" />
-              <span>Dashboard</span>
-            </Link>
+              <Link href="/dashboard">
+                  <LayoutDashboard className="mr-2 h-5 w-5" />
+                  <span>Dashboard</span>
+              </Link>
           </Button>
-        ) : (
-          <Button asChild>
-            <Link href="/login">
+      );
+  }
+
+  return (
+      <Button asChild>
+          <Link href="/login">
               <User className="mr-2 h-5 w-5" />
               <span>Login</span>
-            </Link>
-          </Button>
-        )}
-      </div>
-      <div className="mt-4 flex flex-col gap-4 md:hidden">
-         {isLoggedIn ? (
-            <Button asChild>
-              <Link href="/dashboard">
-                <LayoutDashboard className="mr-2 h-4 w-4" />
-                Dashboard
-              </Link>
-            </Button>
-         ) : (
-            <Button asChild>
-              <Link href="/login">
-                <User className="mr-2 h-4 w-4" />
-                Login
-              </Link>
-            </Button>
-         )}
-      </div>
-    </>
+          </Link>
+      </Button>
   );
 }
 
@@ -129,13 +109,15 @@ export function Header() {
                         </Link>
                         ))}
                     </nav>
-                    <AuthNav />
+                     <div className="md:hidden">
+                        <AuthNav />
+                    </div>
                     </div>
                 </SheetContent>
                 </Sheet>
               </>
             ) : (
-                 <div className="h-10 w-[108px]" />
+                 <div className="h-10 w-24" />
             )
         }
         </div>

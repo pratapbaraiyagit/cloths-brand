@@ -1,10 +1,28 @@
 
+"use client";
+
 import { CategoriesTable } from "@/components/dashboard/CategoriesTable";
 import { ProductsTable } from "@/components/dashboard/ProductsTable";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Shirt, User } from "lucide-react";
+import { Gem, LogOut, Shirt, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+
+function LogoutButton() {
+  const router = useRouter();
+  const handleLogout = () => {
+    router.push('/login');
+  };
+
+  return (
+    <Button variant="outline" onClick={handleLogout}>
+      <LogOut className="mr-2 h-5 w-5" />
+      Logout
+    </Button>
+  );
+}
 
 export default function DashboardPage() {
   return (
@@ -19,12 +37,15 @@ export default function DashboardPage() {
                     Manage your store's products and categories.
                 </p>
             </div>
-            <Button asChild>
-                <Link href="/dashboard/profile">
-                    <User className="mr-2 h-5 w-5" />
-                    Manage Profile
-                </Link>
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button asChild>
+                  <Link href="/dashboard/profile">
+                      <User className="mr-2 h-5 w-5" />
+                      Manage Profile
+                  </Link>
+              </Button>
+              <LogoutButton />
+            </div>
         </div>
         <Tabs defaultValue="products">
           <TabsList className="grid w-full grid-cols-2 md:w-[400px]">

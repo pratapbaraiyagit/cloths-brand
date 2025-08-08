@@ -2,10 +2,10 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, User, LayoutDashboard } from "lucide-react";
+import { Menu, User, LayoutDashboard, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useEffect, useState } from "react";
@@ -20,17 +20,29 @@ const navLinks = [
 
 function AuthNav() {
   const pathname = usePathname();
+  const router = useRouter();
   // This logic should be adapted based on your actual authentication state
   const isLoggedIn = pathname.startsWith('/dashboard');
 
+  const handleLogout = () => {
+    // In a real app, you'd also clear the user's session/token here
+    router.push('/login');
+  };
+
   if (isLoggedIn) {
     return (
-      <Button asChild>
-        <Link href="/dashboard">
-          <LayoutDashboard />
-          <span className="md:inline">Dashboard</span>
-        </Link>
-      </Button>
+       <div className="flex items-center gap-2">
+            <Button asChild variant="outline">
+                <Link href="/dashboard">
+                <LayoutDashboard />
+                <span className="hidden md:inline">Dashboard</span>
+                </Link>
+            </Button>
+            <Button onClick={handleLogout} variant="ghost">
+                <LogOut />
+                <span className="hidden md:inline">Logout</span>
+            </Button>
+       </div>
     );
   }
 
@@ -46,6 +58,13 @@ function AuthNav() {
 
 function MobileNav() {
     const pathname = usePathname();
+    const router = useRouter();
+    const isLoggedIn = pathname.startsWith('/dashboard');
+
+     const handleLogout = () => {
+        router.push('/login');
+    };
+
     return (
          <Sheet>
             <SheetTrigger asChild>
@@ -78,12 +97,19 @@ function MobileNav() {
                         ))}
                     </nav>
                     <div className="mt-4">
-                       <Button asChild className="w-full">
-                          <Link href="/login">
-                            <User />
-                            Login
-                          </Link>
-                        </Button>
+                       {isLoggedIn ? (
+                           <Button onClick={handleLogout} className="w-full">
+                                <LogOut />
+                                Logout
+                           </Button>
+                       ) : (
+                           <Button asChild className="w-full">
+                              <Link href="/login">
+                                <User />
+                                Login
+                              </Link>
+                            </Button>
+                       )}
                     </div>
                 </div>
             </SheetContent>

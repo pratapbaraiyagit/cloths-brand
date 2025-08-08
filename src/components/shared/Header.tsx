@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, ShoppingBag, User, LayoutDashboard } from "lucide-react";
+import { Menu, User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
@@ -65,10 +65,6 @@ export function Header() {
                 </Link>
             </Button>
            )}
-          <Button variant="ghost" size="icon">
-            <ShoppingBag className="h-6 w-6" />
-            <span className="sr-only">Shopping Bag</span>
-          </Button>
         </div>
         <Sheet>
           <SheetTrigger asChild>
@@ -116,10 +112,6 @@ export function Header() {
                         </Link>
                     </Button>
                  )}
-                 <Button>
-                    <ShoppingBag className="mr-2 h-4 w-4" />
-                    My Bag
-                 </Button>
               </div>
             </div>
           </SheetContent>

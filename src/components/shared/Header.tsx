@@ -45,57 +45,61 @@ function AuthNav() {
 
 function ClientAuth() {
     const [isClient, setIsClient] = useState(false);
-    const pathname = usePathname();
 
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    if (!isClient) {
-        return <div className="h-10 w-24" />;
-    }
-
     return (
         <>
             <div className="hidden md:flex">
-                <AuthNav />
+                {isClient ? <AuthNav /> : <div className="h-10 w-24" /> }
             </div>
-            <Sheet>
-            <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2">
-                    <Logo />
-                    <span className="font-headline text-2xl font-bold text-foreground">
-                        LuneFemme
-                    </span>
-                </Link>
-                <nav className="flex flex-col gap-4">
-                    {navLinks.map((link) => (
-                    <Link
-                        key={link.href}
-                        href={link.href}
-                        className={cn(
-                        "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
-                        pathname === link.href && "text-foreground"
-                        )}
-                    >
-                        {link.label}
-                    </Link>
-                    ))}
-                </nav>
-                    <div className="mt-4">
-                        <AuthNav />
-                    </div>
-                </div>
-            </SheetContent>
-            </Sheet>
+            <div className="md:hidden">
+                 {isClient ? (
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <Menu className="h-6 w-6" />
+                                <span className="sr-only">Toggle navigation menu</span>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="right">
+                            <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                            <div className="flex flex-col gap-6 p-6">
+                                <Link href="/" className="flex items-center gap-2">
+                                    <Logo />
+                                    <span className="font-headline text-2xl font-bold text-foreground">
+                                        LuneFemme
+                                    </span>
+                                </Link>
+                                <nav className="flex flex-col gap-4">
+                                    {navLinks.map((link) => (
+                                        <Link
+                                            key={link.href}
+                                            href={link.href}
+                                            className={cn(
+                                                "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
+                                                usePathname() === link.href && "text-foreground"
+                                            )}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ))}
+                                </nav>
+                                <div className="mt-4">
+                                    <AuthNav />
+                                </div>
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                 ) : (
+                    <Button variant="ghost" size="icon" disabled>
+                        <Menu className="h-6 w-6" />
+                        <span className="sr-only">Toggle navigation menu</span>
+                    </Button>
+                 )}
+            </div>
         </>
     );
 }

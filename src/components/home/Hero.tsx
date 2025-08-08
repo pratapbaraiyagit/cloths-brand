@@ -35,7 +35,7 @@ export function Hero() {
           <div className="relative h-96 md:h-[500px] flex items-center justify-center">
             <div className="absolute w-64 h-64 bg-accent/50 rounded-full blur-3xl"></div>
             <Image
-              src="https://placehold.co/600x800"
+              src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=600&h=800&auto=format&fit=crop"
               alt="Floating dress"
               width={400}
               height={550}

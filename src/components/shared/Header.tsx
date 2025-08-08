@@ -78,7 +78,12 @@ function MobileNav() {
                         ))}
                     </nav>
                     <div className="mt-4">
-                        <AuthNav />
+                       <Button asChild className="w-full">
+                          <Link href="/login">
+                            <User />
+                            Login
+                          </Link>
+                        </Button>
                     </div>
                 </div>
             </SheetContent>
@@ -92,14 +97,29 @@ function ClientOnlyAuth() {
     useEffect(() => {
         setIsClient(true);
     }, []);
-
+    
+    // Render a skeleton placeholder on the server and initial client render
+    if (!isClient) {
+        return (
+            <>
+                <div className="hidden md:block">
+                    <div className="h-10 w-24 rounded-md bg-muted animate-pulse" />
+                </div>
+                <div className="md:hidden">
+                    <div className="h-10 w-10 rounded-md bg-muted animate-pulse" />
+                </div>
+            </>
+        );
+    }
+    
+    // Render the actual content only on the client after hydration
     return (
         <>
             <div className="hidden md:block">
-                {isClient ? <AuthNav /> : <div className="h-10 w-24 rounded-md bg-muted animate-pulse" />}
+                <AuthNav />
             </div>
             <div className="md:hidden">
-                {isClient ? <MobileNav /> : <div className="h-10 w-10 rounded-md bg-muted animate-pulse" />}
+                <MobileNav />
             </div>
         </>
     );

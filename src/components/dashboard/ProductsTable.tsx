@@ -37,6 +37,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import Image from "next/image";
+import { ScrollArea } from "../ui/scroll-area";
 
 function ProductForm({ product, categories, onSave, onOpenChange }: { product: Partial<Product> | null, categories: Category[], onSave: () => void, onOpenChange: (open: boolean) => void }) {
     const [name, setName] = useState(product?.name || "");
@@ -93,71 +94,73 @@ function ProductForm({ product, categories, onSave, onOpenChange }: { product: P
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <>
             <DialogHeader>
                 <DialogTitle className="font-headline">{product?.id ? "Edit Product" : "Add New Product"}</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">Name</Label>
-                    <Input id="name" value={name} onChange={e => setName(e.target.value)} className="col-span-3" required />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="price" className="text-right">Price</Label>
-                    <Input id="price" type="number" value={price} onChange={e => setPrice(Number(e.target.value))} className="col-span-3" required />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="category" className="text-right">Category</Label>
-                    <Select value={categoryId} onValueChange={setCategoryId} required>
-                        <SelectTrigger className="col-span-3">
-                            <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {categories.map((category) => (
-                                <SelectItem key={category.id} value={category.id}>
-                                    {category.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="description" className="text-right">Description</Label>
-                    <Textarea id="description" value={description} onChange={e => setDescription(e.target.value)} className="col-span-3" required />
-                </div>
-                <div className="grid grid-cols-4 items-start gap-4">
-                    <Label className="text-right pt-2">Image</Label>
-                    <div className="col-span-3">
-                        <Tabs defaultValue="url">
-                            <TabsList className="grid w-full grid-cols-2">
-                                <TabsTrigger value="url"><Link2 className="mr-2 h-4 w-4" /> URL</TabsTrigger>
-                                <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4" /> Upload</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="url" className="mt-2">
-                                <Input id="image-url" placeholder="https://example.com/image.png" value={image} onChange={e => setImage(e.target.value)} />
-                            </TabsContent>
-                            <TabsContent value="upload" className="mt-2">
-                                <Input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} />
-                            </TabsContent>
-                        </Tabs>
-                        {image && (
-                            <div className="mt-4 relative w-full h-48 rounded-md overflow-hidden border">
-                                <Image src={image} alt="Image preview" layout="fill" objectFit="contain" />
-                            </div>
-                        )}
+            <ScrollArea className="max-h-[70vh] pr-6">
+                <form className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">Name</Label>
+                        <Input id="name" value={name} onChange={e => setName(e.target.value)} className="col-span-3" required />
                     </div>
-                </div>
-            </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="price" className="text-right">Price</Label>
+                        <Input id="price" type="number" value={price} onChange={e => setPrice(Number(e.target.value))} className="col-span-3" required />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="category" className="text-right">Category</Label>
+                        <Select value={categoryId} onValueChange={setCategoryId} required>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {categories.map((category) => (
+                                    <SelectItem key={category.id} value={category.id}>
+                                        {category.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="description" className="text-right">Description</Label>
+                        <Textarea id="description" value={description} onChange={e => setDescription(e.target.value)} className="col-span-3" required />
+                    </div>
+                    <div className="grid grid-cols-4 items-start gap-4">
+                        <Label className="text-right pt-2">Image</Label>
+                        <div className="col-span-3">
+                            <Tabs defaultValue="url">
+                                <TabsList className="grid w-full grid-cols-2">
+                                    <TabsTrigger value="url"><Link2 className="mr-2 h-4 w-4" /> URL</TabsTrigger>
+                                    <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4" /> Upload</TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="url" className="mt-2">
+                                    <Input id="image-url" placeholder="https://example.com/image.png" value={image} onChange={e => setImage(e.target.value)} />
+                                </TabsContent>
+                                <TabsContent value="upload" className="mt-2">
+                                    <Input id="image-upload" type="file" accept="image/*" onChange={handleImageUpload} />
+                                </TabsContent>
+                            </Tabs>
+                            {image && (
+                                <div className="mt-4 relative w-full h-48 rounded-md overflow-hidden border">
+                                    <Image src={image} alt="Image preview" layout="fill" objectFit="contain" />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </form>
+            </ScrollArea>
             <DialogFooter>
                 <DialogClose asChild>
                     <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>Close</Button>
                 </DialogClose>
-                <Button type="submit" disabled={isSaving}>
+                <Button type="submit" onClick={handleSubmit} disabled={isSaving}>
                     {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {isSaving ? "Saving..." : "Save Product"}
                 </Button>
             </DialogFooter>
-        </form>
+        </>
     );
 }
 

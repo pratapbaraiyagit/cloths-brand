@@ -1,8 +1,6 @@
 
 "use client";
 
-import { products } from "@/lib/mock-data";
-import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Heart, ShoppingBag, Truck, Star, Check } from "lucide-react";
 import {
@@ -13,15 +11,9 @@ import {
 } from "@/components/ui/accordion";
 import { ProductGallery } from "./ProductGallery";
 import { ProductCard } from "./ProductCard";
+import type { Product } from "@/lib/mock-data";
 
-export default function ProductClient({ params }: { params: { id: string } }) {
-  const product = products.find((p) => p.id === params.id);
-
-  if (!product) {
-    notFound();
-  }
-
-  const relatedProducts = products.filter(p => p.categoryId === product.categoryId && p.id !== product.id).slice(0, 4);
+export default function ProductClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
 
   return (
     <>

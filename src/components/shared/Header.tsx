@@ -27,7 +27,7 @@ function AuthNav() {
           <Button asChild>
               <Link href="/dashboard">
                   <LayoutDashboard />
-                  <span>Dashboard</span>
+                  <span className="hidden md:inline">Dashboard</span>
               </Link>
           </Button>
       );
@@ -37,7 +37,7 @@ function AuthNav() {
     <Button asChild>
       <Link href="/login">
         <User />
-        <span>Login</span>
+        <span className="hidden md:inline">Login</span>
       </Link>
     </Button>
   );
@@ -45,6 +45,7 @@ function AuthNav() {
 
 function ClientAuth() {
     const [isClient, setIsClient] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         setIsClient(true);
@@ -92,7 +93,7 @@ function ClientAuth() {
                                         href={link.href}
                                         className={cn(
                                             "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
-                                            usePathname() === link.href && "text-foreground"
+                                            pathname === link.href && "text-foreground"
                                         )}
                                     >
                                         {link.label}

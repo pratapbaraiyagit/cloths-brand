@@ -64,9 +64,7 @@ export default function LoginPage() {
             </div>
              <div className="text-right">
                 <Link href="/forgot-password" passHref>
-                  <span className="text-sm text-primary hover:underline cursor-pointer">
-                    Forgot Password?
-                  </span>
+                  <Button variant="link" className="px-0">Forgot Password?</Button>
                 </Link>
               </div>
           </CardContent>

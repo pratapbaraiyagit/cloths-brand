@@ -28,14 +28,14 @@ function AuthNav() {
         {isLoggedIn ? (
           <Button asChild>
             <Link href="/dashboard">
-              <LayoutDashboard className="h-5 w-5" />
+              <LayoutDashboard className="mr-2 h-5 w-5" />
               <span>Dashboard</span>
             </Link>
           </Button>
         ) : (
           <Button asChild>
             <Link href="/login">
-              <User className="h-5 w-5" />
+              <User className="mr-2 h-5 w-5" />
               <span>Login</span>
             </Link>
           </Button>
@@ -135,7 +135,7 @@ export function Header() {
                 </Sheet>
               </>
             ) : (
-                 <div className="h-10 w-10 md:w-auto" />
+                 <div className="h-10 w-[108px]" />
             )
         }
         </div>

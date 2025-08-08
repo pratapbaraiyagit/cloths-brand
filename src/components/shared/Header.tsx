@@ -1,12 +1,14 @@
+
 "use client";
 
 import Link from "next/link";
-import { Menu, ShoppingBag, User } from "lucide-react";
+import { Menu, ShoppingBag, User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,6 +20,13 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // A real app would use a proper auth state management (like Context or a library)
+  // For this demo, we'll just check if the path is the dashboard
+  useEffect(() => {
+    setIsLoggedIn(pathname.startsWith('/dashboard'));
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
@@ -40,13 +49,22 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-4 md:flex">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/login">
-              <User className="h-6 w-6" />
-              <span className="sr-only">Login</span>
-            </Link>
-          </Button>
+        <div className="hidden items-center gap-2 md:flex">
+           {isLoggedIn ? (
+             <Button variant="ghost" size="icon" asChild>
+              <Link href="/dashboard">
+                <LayoutDashboard className="h-6 w-6" />
+                <span className="sr-only">Dashboard</span>
+              </Link>
+            </Button>
+           ) : (
+            <Button variant="ghost" size="icon" asChild>
+                <Link href="/login">
+                <User className="h-6 w-6" />
+                <span className="sr-only">Login</span>
+                </Link>
+            </Button>
+           )}
           <Button variant="ghost" size="icon">
             <ShoppingBag className="h-6 w-6" />
             <span className="sr-only">Shopping Bag</span>
@@ -83,12 +101,21 @@ export function Header() {
                 ))}
               </nav>
               <div className="mt-4 flex flex-col gap-4">
-                 <Button variant="outline" asChild>
-                    <Link href="/login">
-                        <User className="mr-2 h-4 w-4" />
-                        Login
-                    </Link>
-                 </Button>
+                 {isLoggedIn ? (
+                    <Button variant="outline" asChild>
+                        <Link href="/dashboard">
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            Dashboard
+                        </Link>
+                    </Button>
+                 ) : (
+                    <Button variant="outline" asChild>
+                        <Link href="/login">
+                            <User className="mr-2 h-4 w-4" />
+                            Login
+                        </Link>
+                    </Button>
+                 )}
                  <Button>
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     My Bag

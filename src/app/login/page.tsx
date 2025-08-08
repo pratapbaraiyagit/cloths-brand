@@ -1,11 +1,40 @@
+
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { VectorBlobs } from "@/components/shared/VectorBlobs";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (email === "admin@gmail.com" && password === "admin") {
+      toast({
+        title: "Login Successful",
+        description: "Welcome back, Admin!",
+      });
+      router.push("/dashboard");
+    } else {
+      setError("Invalid email or password. Please try again.");
+    }
+  };
+
   return (
     <div className="relative flex min-h-[calc(100vh-160px)] items-center justify-center p-4">
       <VectorBlobs />
@@ -14,25 +43,37 @@ export default function LoginPage() {
           <CardTitle className="font-headline text-3xl">Welcome Back</CardTitle>
           <CardDescription>Log in to access your account and dashboard.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" />
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full text-lg">Log In</Button>
-           <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{" "}
-              <Link href="#" className="font-semibold text-primary-foreground hover:underline">
-                Register here
-              </Link>
-            </p>
-        </CardFooter>
+        <form onSubmit={handleLogin}>
+          <CardContent className="space-y-4">
+            {error && (
+                 <Alert variant="destructive">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle>Login Failed</AlertTitle>
+                    <AlertDescription>
+                        {error}
+                    </AlertDescription>
+                </Alert>
+            )}
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="admin@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="admin"/>
+            </div>
+             <div className="text-right">
+                <Link href="/forgot-password" passHref>
+                  <span className="text-sm text-primary hover:underline cursor-pointer">
+                    Forgot Password?
+                  </span>
+                </Link>
+              </div>
+          </CardContent>
+          <CardFooter className="flex flex-col gap-4">
+            <Button type="submit" className="w-full text-lg">Log In</Button>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   );

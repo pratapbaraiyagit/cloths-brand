@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -25,7 +26,7 @@ function AuthNav() {
       return (
           <Button asChild>
               <Link href="/dashboard">
-                  <LayoutDashboard className="mr-2 h-5 w-5" />
+                  <LayoutDashboard />
                   <span>Dashboard</span>
               </Link>
           </Button>
@@ -35,22 +36,72 @@ function AuthNav() {
   return (
       <Button asChild>
           <Link href="/login">
-              <User className="mr-2 h-5 w-5" />
+              <User />
               <span>Login</span>
           </Link>
       </Button>
   );
 }
 
+function ClientAuth() {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        return <div className="h-10 w-24" />;
+    }
+
+    return (
+        <>
+            <div className="hidden md:flex">
+                <AuthNav />
+            </div>
+            <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                <div className="flex flex-col gap-6 p-6">
+                <Link href="/" className="flex items-center gap-2">
+                    <Logo />
+                    <span className="font-headline text-2xl font-bold text-foreground">
+                        LuneFemme
+                    </span>
+                </Link>
+                <nav className="flex flex-col gap-4">
+                    {navLinks.map((link) => (
+                    <Link
+                        key={link.href}
+                        href={link.href}
+                        className={cn(
+                        "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
+                        usePathname() === link.href && "text-foreground"
+                        )}
+                    >
+                        {link.label}
+                    </Link>
+                    ))}
+                </nav>
+                    <div className="md:hidden">
+                    <AuthNav />
+                </div>
+                </div>
+            </SheetContent>
+            </Sheet>
+        </>
+    );
+}
+
 
 export function Header() {
   const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
@@ -74,52 +125,7 @@ export function Header() {
         </nav>
         
         <div className="flex items-center gap-2">
-            {isClient ? (
-              <>
-                <div className="hidden md:flex">
-                    <AuthNav />
-                </div>
-                <Sheet>
-                <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon" className="md:hidden">
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">Toggle navigation menu</span>
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side="right">
-                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                    <div className="flex flex-col gap-6 p-6">
-                    <Link href="/" className="flex items-center gap-2">
-                        <Logo />
-                        <span className="font-headline text-2xl font-bold text-foreground">
-                            LuneFemme
-                        </span>
-                    </Link>
-                    <nav className="flex flex-col gap-4">
-                        {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={cn(
-                            "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
-                            pathname === link.href && "text-foreground"
-                            )}
-                        >
-                            {link.label}
-                        </Link>
-                        ))}
-                    </nav>
-                     <div className="md:hidden">
-                        <AuthNav />
-                    </div>
-                    </div>
-                </SheetContent>
-                </Sheet>
-              </>
-            ) : (
-                 <div className="h-10 w-24" />
-            )
-        }
+            <ClientAuth />
         </div>
       </div>
     </header>

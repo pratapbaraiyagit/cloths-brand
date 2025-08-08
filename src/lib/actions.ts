@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -10,12 +11,7 @@ const inquirySchema = z.object({
 });
 
 export async function submitInquiry(prevState: any, formData: FormData) {
-  const validatedFields = inquirySchema.safeParse({
-    fullName: formData.get("fullName"),
-    email: formData.get("email"),
-    reason: formData.get("reason"),
-    message: formData.get("message"),
-  });
+  const validatedFields = inquirySchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
     return {

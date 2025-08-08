@@ -95,7 +95,7 @@ export function Header() {
         </nav>
         
         <div className="flex items-center gap-2">
-            {isClient && (
+            {isClient ? (
               <>
                 <div className="hidden md:flex">
                     <AuthNav />
@@ -135,9 +135,13 @@ export function Header() {
                 </SheetContent>
                 </Sheet>
               </>
-            )}
+            ) : (
+                 <div className="h-10 w-10 md:w-auto" />
+            )
+        }
         </div>
       </div>
     </header>
   );
 }
+

@@ -20,11 +20,7 @@ const navLinks = [
 
 function AuthNav() {
   const pathname = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(pathname.startsWith('/dashboard'));
-  }, [pathname]);
+  const isLoggedIn = pathname.startsWith('/dashboard');
 
   return (
     <>
@@ -99,43 +95,47 @@ export function Header() {
         </nav>
         
         <div className="flex items-center gap-2">
-            <div className="hidden md:flex">
-                {isClient && <AuthNav />}
-            </div>
-            <Sheet>
-            <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2">
-                    <Logo />
-                    <span className="font-headline text-2xl font-bold text-foreground">
-                        LuneFemme
-                    </span>
-                </Link>
-                <nav className="flex flex-col gap-4">
-                    {navLinks.map((link) => (
-                    <Link
-                        key={link.href}
-                        href={link.href}
-                        className={cn(
-                        "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
-                        pathname === link.href && "text-foreground"
-                        )}
-                    >
-                        {link.label}
-                    </Link>
-                    ))}
-                </nav>
-                {isClient && <AuthNav />}
+            {isClient && (
+              <>
+                <div className="hidden md:flex">
+                    <AuthNav />
                 </div>
-            </SheetContent>
-            </Sheet>
+                <Sheet>
+                <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="md:hidden">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Toggle navigation menu</span>
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="right">
+                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                    <div className="flex flex-col gap-6 p-6">
+                    <Link href="/" className="flex items-center gap-2">
+                        <Logo />
+                        <span className="font-headline text-2xl font-bold text-foreground">
+                            LuneFemme
+                        </span>
+                    </Link>
+                    <nav className="flex flex-col gap-4">
+                        {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className={cn(
+                            "text-lg font-medium text-muted-foreground transition-colors hover:text-foreground",
+                            pathname === link.href && "text-foreground"
+                            )}
+                        >
+                            {link.label}
+                        </Link>
+                        ))}
+                    </nav>
+                    <AuthNav />
+                    </div>
+                </SheetContent>
+                </Sheet>
+              </>
+            )}
         </div>
       </div>
     </header>

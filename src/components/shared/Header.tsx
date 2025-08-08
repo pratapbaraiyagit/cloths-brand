@@ -18,19 +18,20 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+// This component handles the logic for showing Login vs Dashboard
 function AuthNav() {
   const pathname = usePathname();
   const isLoggedIn = pathname.startsWith('/dashboard');
 
   if (isLoggedIn) {
-      return (
-        <Button asChild>
-          <Link href="/dashboard">
-            <LayoutDashboard />
-            <span className="md:inline">Dashboard</span>
-          </Link>
-        </Button>
-      );
+    return (
+      <Button asChild>
+        <Link href="/dashboard">
+          <LayoutDashboard />
+          <span className="md:inline">Dashboard</span>
+        </Link>
+      </Button>
+    );
   }
 
   return (
@@ -43,6 +44,7 @@ function AuthNav() {
   );
 }
 
+// This component ensures that AuthNav and the mobile menu only render on the client
 function ClientAuth() {
     const [isClient, setIsClient] = useState(false);
     const pathname = usePathname();
@@ -51,12 +53,12 @@ function ClientAuth() {
         setIsClient(true);
     }, []);
 
-
+    // Render a placeholder on the server and during the initial client render
     if (!isClient) {
         return (
-             <>
+            <>
                 <div className="hidden md:block">
-                     <div className="h-10 w-24 rounded-md bg-muted animate-pulse" />
+                    <div className="h-10 w-24 rounded-md bg-muted animate-pulse" />
                 </div>
                 <div className="md:hidden">
                     <Button variant="ghost" size="icon" disabled>
@@ -64,9 +66,10 @@ function ClientAuth() {
                     </Button>
                 </div>
             </>
-        )
+        );
     }
 
+    // Render the actual content only on the client
     return (
         <>
             <div className="hidden md:block">
@@ -113,7 +116,6 @@ function ClientAuth() {
         </>
     );
 }
-
 
 export function Header() {
   const pathname = usePathname();

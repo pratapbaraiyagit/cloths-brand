@@ -84,16 +84,16 @@ export default function LoginPage() {
                 </Button>
               </div>
             </div>
-             <div className="text-right">
-                <Link href="/forgot-password" passHref>
-                  <Button variant="link" className="px-0">Forgot Password?</Button>
-                </Link>
-              </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <Button type="submit" className="w-full text-lg">Log In</Button>
           </CardFooter>
         </form>
+        <div className="text-center pb-6 px-6">
+            <Link href="/forgot-password" passHref>
+              <Button variant="link" className="px-0">Forgot Password?</Button>
+            </Link>
+        </div>
       </Card>
     </div>
   );

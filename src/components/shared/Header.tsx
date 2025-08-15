@@ -22,7 +22,7 @@ function AuthNav({ isLoggedIn }: { isLoggedIn: boolean }) {
   if (isLoggedIn) {
     return (
        <div className="flex items-center gap-2">
-            <Button asChild variant="outline">
+            <Button asChild>
                 <Link href="/dashboard">
                 <LayoutDashboard className="mr-2 h-5 w-5" />
                 <span>Dashboard</span>
@@ -106,6 +106,16 @@ function ClientOnlyAuth() {
     useEffect(() => {
         setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
         setIsLoading(false);
+        
+        const handleStorageChange = () => {
+             setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+        };
+        
+        window.addEventListener('storage', handleStorageChange);
+        
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        }
     }, []);
     
     if (isLoading) {
